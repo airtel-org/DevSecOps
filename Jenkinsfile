@@ -4,7 +4,13 @@ pipeline {
   
   
        stages {
-
+           stage('notify slack') {
+        slackNotify(
+            status: 'STARTED',
+            color: '#439FE0',
+            message: 'Pipeline execution has started'
+        )
+       }
         stage('Checkout') {
             steps {
                 echo "Cloning Repository..."
@@ -83,14 +89,7 @@ pipeline {
     }
 
     post {
-            started {
-        echo "Pipeline started."
-        slackNotify(
-            status: 'STARTED',
-            color: '#439FE0',
-            message: 'Pipeline execution has started'
-        )
-    }
+       
         success {
             echo "Pipeline completed successfully."
              slackNotify(
