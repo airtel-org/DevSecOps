@@ -1,4 +1,4 @@
-
+@Library('shared-lib') _
 pipeline {
     agent any
   
@@ -83,11 +83,29 @@ pipeline {
     }
 
     post {
+            started {
+        echo "Pipeline started."
+        slackNotify(
+            status: 'STARTED',
+            color: '#439FE0',
+            message: 'Pipeline execution has started'
+        )
+    }
         success {
             echo "Pipeline completed successfully."
+             slackNotify(
+            status: 'SUCCESS',
+            color: 'good',
+            message: 'Pipeline completed successfully'
+        )
         }
         failure {
             echo "Pipeline failed. Please check the logs for details."
+             slackNotify(
+            status: 'FAILED',
+            color: 'danger',
+            message: 'Pipeline failed'
+        )
         }
     }
 }
